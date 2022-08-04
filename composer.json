@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": ">7.0",
-        "dio": ">0.2.0"
+        "ext-dio": ">0.2.0"
     },
     "autoload": {
         "psr-4": {

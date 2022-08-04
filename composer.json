@@ -1,5 +1,5 @@
 {
-    "name": "yjtec/meter",
+    "name": "biuio/meter",
     "description": "电能表协议、通讯等php库",
     "keywords": [
         "dlt645",

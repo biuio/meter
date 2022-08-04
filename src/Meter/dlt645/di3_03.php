@@ -1,9 +1,9 @@
 <?php
 
-namespace meter645\dlt645;
+namespace Biuio\Meter\dlt645;
 
-use meter645\dlt645;
-use meter645\lib\tool;
+use Biuio\Meter\dlt645;
+use Biuio\Meter\lib\tool;
 
 /**
  * 表A.3 变量数据标识编码表

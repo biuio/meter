@@ -1,6 +1,6 @@
 <?php
 
-namespace meter645;
+namespace Biuio\Meter;
 
 class dlt645
 {

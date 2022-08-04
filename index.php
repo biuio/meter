@@ -4,8 +4,8 @@ if (!isset($argv[1])) {
     exit('参数不足');
 }
 
-include_once __DIR__ . '/src/test/autoload.php';
+include_once __DIR__ . '/src/autoload.php';
 
-$c = '\\meter645\\test\\' . $argv[1];
+$c = '\\Biuio\\Meter\\test\\' . $argv[1];
 $class = new $c();
 $class->start();

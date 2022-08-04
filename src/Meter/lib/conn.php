@@ -1,6 +1,6 @@
 <?php
 
-namespace meter645\lib;
+namespace Biuio\Meter\lib;
 
 class conn
 {

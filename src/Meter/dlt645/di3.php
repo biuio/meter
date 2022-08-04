@@ -1,8 +1,8 @@
 <?php
 
-namespace meter645\dlt645;
+namespace Biuio\Meter\dlt645;
 
-use meter645\dlt645;
+use Biuio\Meter\dlt645;
 
 class di3
 {

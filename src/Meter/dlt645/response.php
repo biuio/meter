@@ -1,8 +1,8 @@
 <?php
 
-namespace meter645\dlt645;
+namespace Biuio\Meter\dlt645;
 
-use meter645\lib\tool;
+use Biuio\Meter\lib\tool;
 
 class response
 {

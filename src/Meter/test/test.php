@@ -1,12 +1,12 @@
 <?php
 
-namespace meter645\test;
+namespace Biuio\Meter\test;
 
-use meter645\dlt645;
-use meter645\lib\conn;
-use meter645\dlt645\di3_00;
-use meter645\dlt645\di3_03;
-use meter645\dlt645\di3_04;
+use Biuio\Meter\dlt645;
+use Biuio\Meter\lib\conn;
+use Biuio\Meter\dlt645\di3_00;
+use Biuio\Meter\dlt645\di3_03;
+use Biuio\Meter\dlt645\di3_04;
 
 class test
 {

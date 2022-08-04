@@ -1,8 +1,8 @@
 <?php
 
-namespace lib\dlt645;
+namespace meter645\dlt645;
 
-use lib\tool;
+use meter645\lib\tool;
 
 class response
 {

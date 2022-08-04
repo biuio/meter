@@ -1,6 +1,6 @@
 <?php
 
-namespace lib;
+namespace meter645;
 
 class dlt645
 {

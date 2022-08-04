@@ -1,9 +1,9 @@
 <?php
 
-namespace lib\dlt645;
+namespace meter645\dlt645;
 
-use lib\dlt645;
-use lib\tool;
+use meter645\dlt645;
+use meter645\lib\tool;
 
 /**
  * 表A.1 电能表数据标识编码表
@@ -16,11 +16,11 @@ class di3_00 extends di3
     {
         parent::__construct($dlt645);
     }
-    /////////////////////日期时间、最大需量、滑差时间等/////////////////////
+    /////////////////////电能表数据标识编码表/////////////////////
     /**
-     * 组合有功总电能
-     * 最近12天的，$last=0~11
-     * 费率，$feilv=1~63，当$feilv=255组合有功电能数据库
+     * 获取各项电能数据
+     * 最近12天的，$day=self::DAYS
+     * 费率，$feilv=self::RATES，当$feilv=255组合有功电能数据库
      * 
      */
     public function getMeterEnergy($day = "00", $rate = "00")
@@ -31,8 +31,9 @@ class di3_00 extends di3
         if (!in_array($rate, self::RATES)) {
             return false;
         }
-        $this->exec('11', '00', '00', $rate, $day, 1); //00 00 00 00
-        $NData = str_split($this->response->NData, 2);
+        $this->exec('11', '00', '00', $rate, $day); //00 00 00 00
+        $energy = intval(substr($this->response->NData, 0, 6)) + intval(substr($this->response->NData, 6, 2)) / 100;
+        return $energy;
     }
     /////////////////////.../////////////////////
     /////////////////////.../////////////////////

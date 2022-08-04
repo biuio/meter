@@ -1,9 +1,9 @@
 <?php
 
-namespace lib\dlt645;
+namespace meter645\dlt645;
 
-use lib\dlt645;
-use lib\tool;
+use meter645\dlt645;
+use meter645\lib\tool;
 
 /**
  * 表A.5 参变量数据表示编码表

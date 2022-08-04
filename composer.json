@@ -1,0 +1,21 @@
+{
+    "name": "biuio/meter",
+    "description": "Linphe框架的模板层",
+    "keywords": ["view", "linphe"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ax",
+            "email": "18716463@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Yjtec\\Linview\\": "src/"
+        }
+    }
+}

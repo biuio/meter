@@ -15,6 +15,7 @@ class response
     public $di2;
     public $di1;
     public $di0;
+    public $err = null;
     public function __construct()
     {
     }
@@ -25,15 +26,22 @@ class response
         $this->len = hexdec(substr($this->str, 18, 2)) * 2;
         switch ($this->ctrlCode) {
             case '91': //正常应答
+                $di = tool::getDataAdd33H(substr($this->str, 20, 8), false);
+                $this->di3 = substr($di, 6);
+                $this->di2 = substr($di, 4, 2);
+                $this->di1 = substr($di, 2, 2);
+                $this->di0 = substr($di, 0, 2);
+                $this->NData = tool::reverseByte(tool::getDataAdd33H(substr($this->str, 28, $this->len - 8), false));
+                break;
             case "D1": //异常应答
+                $this->di3 = "";
+                $this->di2 = "";
+                $this->di1 = "";
+                $this->di0 = "";
+                $this->NData = tool::getDataAdd33H(substr($this->str, 20, $this->len), false);
+                $this->err = tool::getHex2bin($this->NData);
                 break;
         }
-        $di = tool::getDataAdd33H(substr($this->str, 20, 8), false);
-        $this->di3 = substr($di, 6);
-        $this->di2 = substr($di, 4, 2);
-        $this->di1 = substr($di, 2, 2);
-        $this->di0 = substr($di, 0, 2);
-        $this->NData = tool::reverseByte(tool::getDataAdd33H(substr($this->str, 28, $this->len - 8), false));
     }
     public function setRaw($raw)
     {

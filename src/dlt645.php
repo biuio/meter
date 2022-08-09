@@ -15,7 +15,6 @@ class dlt645
     }
     public function exec($request, $response)
     {
-        $raw = $this->conn->req($request->raw);
-        $response->setRaw($raw)->make();
+        return $this->conn->req($request->raw);
     }
 }

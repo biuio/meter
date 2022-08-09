@@ -7,6 +7,7 @@ use Biuio\Meter\lib\tool;
 
 class request
 {
+    public $name;
     public $raw; //发出的原始请求帧（二进制命令）
     public $address; //地址域
     public $ctrlCode; //控制码
@@ -36,6 +37,11 @@ class request
     public function setAddress($address)
     {
         $this->address = $address;
+        return $this;
+    }
+    public function setName($name)
+    {
+        $this->name = $name;
         return $this;
     }
     public function setCtrlCode($ctrlCode)

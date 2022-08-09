@@ -4,6 +4,18 @@ namespace Biuio\Meter\lib;
 
 class tool
 {
+    public static function getHex2bin($hex)
+    {
+        $dataStr = "";
+        $dataArr = str_split($hex, 2);
+        foreach ($dataArr as $d) {
+            $dec = hexdec($d);
+            var_dump($dec);
+            $hex = strtoupper(str_pad(decbin($dec), 8, '0', STR_PAD_LEFT));
+            $dataStr .= $hex;
+        }
+        return $dataStr;
+    }
     /**
      * 将十六进制字符串，各位加上/减去/不加减（相当于只反转）33H，同时支持两字节调转
      * $type=(1/加33H,2/减33H,3/不加减)

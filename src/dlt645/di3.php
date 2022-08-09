@@ -22,14 +22,11 @@ class di3
         $this->address = $address;
         return $this;
     }
-    public function exec($ctrlCode, $di3, $di2, $di1, $di0, $debug = false)
+    public function exec($name, $ctrlCode, $di)
     {
         $address = $this->address ? $this->address : dlt645::DEFAULT_ADDR;
-        $this->request->setAddress($address)->setCtrlCode($ctrlCode)->setDI3($di3)->setDI2($di2)->setDI1($di1)->setDI0($di0)->make();
-        $this->dlt645->exec($this->request, $this->response);
-        if ($debug) {
-            var_dump($this->request);
-            var_dump($this->response);
-        }
+        $this->request->setName($name)->setAddress($address)->setCtrlCode($ctrlCode)->setDI3($di[0])->setDI2($di[1])->setDI1($di[2])->setDI0($di[3])->make();
+        $raw = $this->dlt645->exec($this->request, $this->response);
+        $this->response->setRaw($raw)->make();
     }
 }

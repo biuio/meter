@@ -14,6 +14,7 @@ class request
     public $len;
     public $ck;
     public $str; //发出的原始请求帧字符串（十六进制形式的字符串，便于观看）
+    public $di;
     public $di3;
     public $di2;
     public $di1;
@@ -24,8 +25,9 @@ class request
 
     public function make()
     {
-        $data = "";
+        $this->di = $data = "";
         if ($this->di3 && $this->di2 && $this->di1 && $this->di0) {
+            $this->di = $this->di0 . $this->di1 . $this->di2 . $this->di3;
             $data = tool::getDataAdd33H($this->di0 . $this->di1 . $this->di2 . $this->di3); //注意，此处调转了DI3_2_1_0的顺序
         }
         $this->len = tool::getByteCnt($data);

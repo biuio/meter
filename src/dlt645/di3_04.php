@@ -10,10 +10,34 @@ use Biuio\Meter\lib\tool;
  */
 class di3_04 extends di3
 {
-    public function __construct($dlt645)
+    const DIs = [
+        "自动循环显示第1屏显示数据项" => ["04", "04", "02", "01", ["NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN", "32", ""], "r"],
+        "---",
+        "厂家软件版本号（ASCII码）" => ["04", "80", "00", "01", ["NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN", "32", ""], "r"],
+        "厂家硬件版本号（ASCII码）" => ["04", "80", "00", "02", ["NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN", "32", ""], "r"],
+        "厂家编号（ASCII码）" => ["04", "80", "00", "03", ["NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN", "32", ""], "r"],
+    ];
+    const NOTES = [
+        "注1" => "",
+        "注2" => "",
+        "注3" => "",
+        "注4" => "",
+        "注5" => "",
+        "注6" => "",
+    ];
+    public function getData($name)
     {
-        parent::__construct($dlt645);
+        if (!in_array($name, array_keys(self::DIs))) {
+            return false;
+        }
+        $di = self::DIs[$name];
+        if (!strpos("r", $di[5]) === false) { //本项目不可读
+            return false;
+        }
+        $this->exec($name, '11', $di);
+        return tool::getAscii2Str($this->response->NData);
     }
+    ////////////以下待定/////////////
     /////////////////////日期时间、最大需量、滑差时间等/////////////////////
     /**
      * 日期及星期（其中0代表星期天）

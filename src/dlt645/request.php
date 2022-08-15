@@ -8,6 +8,7 @@ use Biuio\Meter\lib\tool;
 class request
 {
     public $name;
+    public $history;
     public $raw; //发出的原始请求帧（二进制命令）
     public $address; //地址域
     public $ctrlCode; //控制码

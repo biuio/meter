@@ -42,68 +42,83 @@ class tool
     public static function caclResponses($patterns, $response)
     {
         $data = null;
+        $pos = 0;
+        $patterns = array_reverse($patterns);
         foreach ($patterns as $pattern) {
-            $data[] = self::caclOneResponse($pattern, $response); //这里有问题，起始点传0好像不太对
+            if (!is_array($pattern) || $pattern == "---") {
+                continue;
+            }
+            $data[] = self::caclOneResponse($pattern, $response, $pos);
+            $pos += $pattern[1] * 2;
         }
-        return $data;
+        return array_reverse($data);
     }
     public static function caclOneResponse($patterns, $response, $pos = 0)
     {
         $pattern = $patterns[0];
         $len = $patterns[1];
         $unit = $patterns[2];
-        switch ($pattern) {
-            case "YYMMDDhhmmss":
-                $dtime = strtotime("20" . substr($response, $pos, strlen($pattern)));
-                return ['val' => date('Y-m-d H:i:s', $dtime), 'unit' => $unit];
-            case "YYMMDDhhmm":
-                $dtime = strtotime("20" . substr($response, $pos, strlen($pattern)));
-                return ['val' => date('Y-m-d H:i', $dtime), 'unit' => $unit];
-            case "MMDDhhmm":
-                $dtime = strtotime(substr($response, $pos, strlen($pattern)));
-                return ['val' => date('m-d H:i', $dtime), 'unit' => $unit];
-            case "hhmmss":
-                $dtime = substr($response, $pos, strlen($pattern));
-                return ['val' => date('H:i:s', $dtime), 'unit' => $unit];
+        $dtype = $patterns[3];
+        $name = isset($patterns[4]) ? $patterns[4] : "";
+        $data = null;
+        if ($dtype == "string" || $dtype == "ascii" || $dtype == "uknow") {
+            $data = substr($response, $pos, strlen($pattern));
+            if ($dtype == "ascii") {
+                $data = self::getAscii2Str($data);
+            }
+        } elseif ($dtype == "int") {
+            $data = intval(substr($response, $pos, strlen($pattern)));
+        } elseif ($dtype == "float" || $dtype == "double") {
+            $dotPos = strpos($pattern, '.');
+            $dotLen =  $dotPos !== false ? 1 : 0; //寻找其中是否有dot
+            $rsp = substr($response, $pos, strlen($pattern) - $dotLen);
+            $data = doubleval(substr_replace($rsp, ".", $dotPos, 0));
+        } elseif ($dtype == "date" || $dtype == "time") {
+            $dtime = substr($response, $pos, strlen($pattern));
+            switch ($pattern) {
+                case "YYMMDDhhmmss":
+                    $data = date('Y-m-d H:i:s', strtotime("20" . $dtime));
+                    break;
+                case "YYMMDDhhmm":
+                    $data = date('Y-m-d H:i', strtotime("20" . $dtime . "00"));
+                    break;
+                case "YYMMDDWW":
+                    $day = date('Y-m-d', strtotime("20" . substr($dtime, 0, 6)));
+                    $week = intval(substr($dtime, 6));
+                    $data = ['day' => $day, 'week' => $week];
+                    break;
+                case "YYMMDD":
+                    $data = date('Y-m-d', strtotime("20" . $dtime . "00"));
+                    break;
+                case "MMDDhhmm":
+                    $data = date('m-d H:i', strtotime(date("Y") . $dtime . "00"));
+                    break;
+                case "MMDD":
+                    $data = date('m-d', strtotime(date("Y") . $dtime));
+                    break;
+                case "DDhh":
+                    $data = [
+                        "day" => intval(substr($dtime, 0, 2)),
+                        "hour" => intval(substr($dtime, 2)),
+                    ];
+                    break;
+                case "hhmmss":
+                    $data = date('H:i:s', $dtime);
+                    break;
+                case "hhmm":
+                    $data = date('H:i', $dtime . "00");
+                    break;
+            }
+        } else {
+            $data = "数据类型未知，请查阅资料后重试";
         }
-        $checkResult = self::checkChr($pattern);
-        if ($checkResult['isDot']) {
-            $r = substr_replace($response, ".", $checkResult['dotPos'], 0); //这里有问题
-            return ['val' => doubleval($r), 'unit' => $unit];
-        }
-        if ($checkResult['allIsN']) {
-            $r = substr($response, $pos, strlen($pattern));
-            return ['val' => $r, 'unit' => $unit];
-        }
-        if ($checkResult['allIsX']) {
-            $r = substr($response, $pos, strlen($pattern));
-            return ['val' => intval($r), 'unit' => $unit];
-        }
+        return ['val' => $data, 'len' => $len, 'unit' => $unit, 'dtype' => $dtype, 'name' => $name];
     }
-    public static function checkChr($str)
-    {
-        $checkResult = [
-            "allIsX" => true,
-            "allIsN" => true,
-            "isDot" => false,
-            "dotPos" => -1,
-        ];
-        for ($i = 0; $i < strlen($str); $i++) {
-            $chr = $str[$i];
-            if ($chr != 'X') {
-                $checkResult["allIsX"] = false;
-            }
-            if ($chr != 'N') {
-                $checkResult["allIsN"] = false;
-            }
-            if ($chr == '.') {
-                $checkResult["isDot"] = true;
-                $checkResult["dotPos"] = $i;
-                break;
-            }
-        }
-        return $checkResult;
-    }
+    /**
+     * 将一串十六进制字符串码转换位ascii字符串
+     * 输入形如："3230475730323430303030303530303132303232303330390000000000000000"
+     * 输出形如："20GW02400000500120220309"
+     */
     public static function getAscii2Str($ascii)
     {
         $dataStr = "";

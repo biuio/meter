@@ -5,7 +5,10 @@ namespace Biuio\Meter\lib;
 class conn
 {
     public $fd;
-    public function __construct($uri)
+    public $option = array('baud'  =>  2400,    'bits'  =>  8,    'stop'   =>  1,    'parity'  =>  2);
+    public $writeResult;
+    public $readResult;
+    public function __construct($uri, $option = array())
     {
         $this->open($uri);
     }
@@ -19,16 +22,14 @@ class conn
             exit('串口已经被其他应用占用' . PHP_EOL); // "The lock can not be cleared. It is held by someone else.\n";
         }
         // echo  "连接成功" . PHP_EOL; //Lock successfully set/cleared
-        $option = array('baud'  =>  2400,    'bits'  =>  8,    'stop'   =>  1,    'parity'  =>  2);
-        dio_tcsetattr($this->fd, $option);
+        dio_tcsetattr($this->fd, $this->option);
     }
     public function req($cmd)
     {
-        $this->write($cmd);
-        // sleep(1);
+        $this->writeResult = $this->write($cmd);
         usleep(0.6 * 1000 * 1000);
-        $res = $this->read();
-        return $res;
+        $this->readResult = $this->read();
+        return $this->readResult;
     }
     public function write($cmd)
     {

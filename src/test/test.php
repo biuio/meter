@@ -53,23 +53,23 @@ class test
         // // print_r($dl3_02->response);
         // print_r($data);
 
-        // echo "di3_03" . PHP_EOL;
-        // $di3_03 = new di3_03($this->dlt645);
-        // $di3_03->setAddress("214790020322");
-        // // $this->getAllData($di3_03, "上1次");
+        echo "di3_03" . PHP_EOL;
+        $di3_03 = new di3_03($this->dlt645);
+        $di3_03->setAddress("214790020322");
+        $this->getAllData($di3_03, "上1次");
         // $data = $di3_03->getData('掉电发生时刻，结束时刻',"上1次");
         // print_r($di3_03->request);
         // print_r($di3_03->response);
         // print_r($data);
 
-        echo "di3_04" . PHP_EOL;
-        $di3_04 = new di3_04($this->dlt645);
-        $di3_04->setAddress("214790020322");
+        // echo "di3_04" . PHP_EOL;
+        // $di3_04 = new di3_04($this->dlt645);
+        // $di3_04->setAddress("214790020322");
         // $this->getAllData($di3_04, "上1次");
-        $data = $di3_04->getData('第一套时区表数据');
+        // $data = $di3_04->getData('最大电流（ASCII）');
         // print_r($di3_04->request);
-        print_r($di3_04->response);
-        print_r($data);
+        // print_r($di3_04->response);
+        // print_r($data);
 
         $this->conn->close();
         // print_r($data);

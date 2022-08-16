@@ -43,7 +43,7 @@ class tool
     {
         $data = null;
         $pos = 0;
-        $patterns = array_reverse($patterns);
+        // $patterns = array_reverse($patterns);
         foreach ($patterns as $pattern) {
             if (!is_array($pattern) || $pattern == "---") {
                 continue;
@@ -51,7 +51,7 @@ class tool
             $data[] = self::caclOneResponse($pattern, $response, $pos);
             $pos += $pattern[1] * 2;
         }
-        return array_reverse($data);
+        return ($data);
     }
     public static function caclOneResponse($patterns, $response, $pos = 0)
     {
@@ -103,10 +103,11 @@ class tool
                     ];
                     break;
                 case "hhmmss":
-                    $data = date('H:i:s', $dtime);
+                    // $data = date('H:i:s', strtotime($dtime));
+                    $data = substr_replace(substr_replace($dtime, ":", 2, 0), 5, 0);
                     break;
                 case "hhmm":
-                    $data = date('H:i', $dtime . "00");
+                    $data = substr_replace($dtime, ":", 2, 0);
                     break;
             }
         } else {

@@ -104,7 +104,8 @@ class tool
                     break;
                 case "hhmmss":
                     // $data = date('H:i:s', strtotime($dtime));
-                    $data = substr_replace(substr_replace($dtime, ":", 2, 0), 5, 0);
+                    $t = substr_replace($dtime, ":", 2, 0);
+                    $data = substr_replace($t, ":", 5, 0);
                     break;
                 case "hhmm":
                     $data = substr_replace($dtime, ":", 2, 0);
@@ -113,7 +114,7 @@ class tool
         } else {
             $data = "数据类型未知，请查阅资料后重试";
         }
-        return ['val' => $data, 'len' => $len, 'unit' => $unit, 'dtype' => $dtype, 'name' => $name];
+        return ['val' => $data, 'len' => $len, 'unit' => $unit, 'pattern' => $pattern, 'dtype' => $dtype, 'name' => $name];
     }
     /**
      * 将一串十六进制字符串码转换位ascii字符串
